@@ -17,7 +17,7 @@ function App() {
     { title: 'Event 1', date: '2024-04-16' },
     { title: 'Event 2', date: '2024-04-17' }
   ]);
-  const [showAlert, setShowAlert] = useState(false);
+  //const [showAlert, setShowAlert] = useState(false);
   const [showTimeSlotAlert, setShowTimeSlotAlert] = useState(false);
   const [minTimeSlotAlert, setMinTimeSlotAlert] = useState(false); // State variable for displaying the minimum time slot alert
   const [showOverlapAlert, setShowOverlapAlert] = useState(false); // State variable for displaying the overlap warning message
@@ -47,7 +47,7 @@ function App() {
 
     // Check if the clicked date is before the current date
     if (clickedDateTime.isBefore(currentDate, 'day')) {
-      setShowAlert(true);
+      //setShowAlert(true);
       console.log('Show Alert:', true);
     } else {
       // Check if the clicked time is between 9 AM and 6 PM on the clicked date
@@ -79,7 +79,7 @@ function App() {
     setEndDatePicker(null);
     setEventTitle('');
     setModalOpen(false);
-    setShowAlert(false);
+    //setShowAlert(false);
     setShowTimeSlotAlert(false);
     setMinTimeSlotAlert(false);
   };
@@ -223,17 +223,8 @@ function App() {
   // };
 
   const handleSaveEvent = () => {
-    const currentDate = moment();
-  
-    if (!startDatePicker || !endDatePicker) {
-      setShowAlert(true);
-      return;
-    }
-  
-    if (startDatePicker.isBefore(currentDate, 'day')) {
-      setShowAlert(true);
-      return;
-    }
+   // const currentDate = moment();
+
   
     // Check if the duration is less than one hour
     const duration = moment.duration(endDatePicker.diff(startDatePicker)).as('hours');
