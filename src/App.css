@@ -36,3 +36,67 @@
     transform: rotate(360deg);
   }
 }
+
+.modal-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* .past-date {
+  color: #ccc; 
+  cursor: not-allowed; 
+  background-color: #f5f5f5;
+} */
+
+/* div .fc-daygrid-day-frame .past-date {
+  background-color: #f5f5f5; 
+  cursor: not-allowed; 
+} */
+.fc-day-past {
+  color: #999; /* Gray color for past dates */
+  background-color: #f5f5f5; 
+  cursor: not-allowed; 
+}
+.fc-day-past .fc-daygrid-day-top {
+  background-color: #f5f5f5; /* Gray background color for past date cells */
+}
+
+.fc-daygrid-event {
+  white-space: normal !important; /* Allow text to wrap */
+}
+
+.fc-event-time {
+  display: none;
+}
+
+/* .ant-picker,
+.ant-picker-input {
+  width: auto;
+  margin-right: 0; 
+}
+
+.ant-picker-dropdown {
+  z-index: 9999; 
+} */
+.ant-picker-input input {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+
+
+
+
+
+/* You can add more custom styling as needed */
