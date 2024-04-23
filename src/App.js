@@ -23,56 +23,30 @@ function App() {
   const [showOverlapAlert, setShowOverlapAlert] = useState(false); // State variable for displaying the overlap warning message
 
   const handleDateClick = (arg) => {
-    // Set the clicked date and time to the current date and time
+    const currentDate = moment();
     const clickedDateTime = moment(arg.date).set({
       hour: moment().hour(),
       minute: moment().minute(),
       second: moment().second()
     });
-
-    const currentDate = moment();
-
     // Calculate the end time of the selected slot
     const endDateTime = moment(clickedDateTime).add(1, 'hour');
-    console.log('endDateTime', endDateTime)
-
     // Check if the duration is less than one hour
     if (endDateTime.isBefore(moment(arg.date))) {
       setMinTimeSlotAlert(true);
       return;
     }
-
-    console.log('Clicked Date Time:', clickedDateTime.format());
-    console.log('Current Date Time:', currentDate.format());
-
     // Check if the clicked date is before the current date
     if (clickedDateTime.isBefore(currentDate, 'day')) {
-      //setShowAlert(true);
-      console.log('Show Alert:', true);
-    } else {
-      // Check if the clicked time is between 9 AM and 6 PM on the clicked date
-      const nineAM = clickedDateTime.clone().set({ hour: 9, minute: 0, second: 0 });
-      const sixPM = clickedDateTime.clone().set({ hour: 18, minute: 0, second: 0 });
-
-      console.log('9 AM:', nineAM.format());
-      console.log('6 PM:', sixPM.format());
-
-      if (
-        clickedDateTime.isBefore(nineAM) ||
-        clickedDateTime.isAfter(sixPM)
-      ) {
-        setShowTimeSlotAlert(true);
-        console.log('Show Time Slot Alert:', true);
-      } else {
-        // Proceed with creating the event
-        //setStartDatePicker(clickedDateTime);
-        //setEndDatePicker(clickedDateTime);
-        setEventTitle('');
-        setModalOpen(true);
-        console.log('Modal Open:', true);
-      }
+      return false;
     }
+
+    //setStartDatePicker(clickedDateTime);
+    //setEndDatePicker(endDateTime);
+    setEventTitle('');
+    setModalOpen(true);
   };
+
 
   const closeModal = () => {
     setStartDatePicker(null);
@@ -84,205 +58,68 @@ function App() {
     setMinTimeSlotAlert(false);
   };
 
-  // const handleSaveEvent = () => {
-  //   const currentDate = moment();
-
-  //   if (!startDatePicker || !endDatePicker) {
-  //     setShowAlert(true);
-  //     return;
-  //   }
-
-  //   if (startDatePicker && startDatePicker.isBefore(currentDate, 'day')) {
-  //     setShowAlert(true);
-  //     return;
-  //   }
-
-  //   // Check if the duration is less than one hour
-  //   const duration = moment.duration(endDatePicker.diff(startDatePicker)).as('hours');
-  //   if (duration < 1) {
-  //     setMinTimeSlotAlert(true);
-  //     return;
-  //   }
-
-  //   // Check if the start date is before 9 AM or the end date is after 6 PM
-  //   const nineAM = moment(startDatePicker).set({ hour: 9, minute: 0, second: 0 });
-  //   const sixPM = moment(endDatePicker).set({ hour: 18, minute: 0, second: 0 });
-
-  //   if (startDatePicker.isBefore(nineAM) || endDatePicker.isAfter(sixPM)) {
-  //     setShowTimeSlotAlert(true);
-  //     return;
-  //   }
-
-  //   const overlap = events.some(event => {
-  //     const eventStart = moment(event.start);
-  //     const eventEnd = moment(event.end);
-
-  //     // Check if the new event overlaps with existing events
-  //     return (
-  //       moment(startDatePicker).isBetween(eventStart, eventEnd, null, '[]', 'minute') ||
-  //       moment(endDatePicker).isBetween(eventStart, eventEnd, null, '[]', 'minute') ||
-  //       (eventStart.isBefore(startDatePicker) && eventEnd.isAfter(endDatePicker)) ||
-  //       (eventStart.isSameOrBefore(startDatePicker, 'minute') && eventEnd.isSameOrAfter(endDatePicker, 'minute'))
-  //     );
-  //   });
-
-  //   if (overlap) {
-  //     setShowOverlapAlert(true); // Show overlap alert
-  //     return;
-  //   }
-
-  //   // Format the start and end times
-  //   const startTime = startDatePicker.format('hh:mm A');
-  //   const endTime = endDatePicker.format('hh:mm A');
-
-  //   // Construct the event title with time
-  //   const eventTitleWithTime = `${eventTitle} ${startTime} - ${endTime}`;
-
-  //   const newEvent = {
-  //     title: eventTitleWithTime,
-  //     //title: eventTitle,
-  //     start: startDatePicker.toISOString(),
-  //     end: endDatePicker.toISOString()
-  //   };
-
-  //   setEvents([...events, newEvent]);
-  //   closeModal();
-  // };
-
-  // const handleSaveEvent = () => {
-  //   const currentDate = moment();
-
-  //   if (!startDatePicker || !endDatePicker) {
-  //     setShowAlert(true);
-  //     return;
-  //   }
-
-  //   if (startDatePicker.isBefore(currentDate, 'day')) {
-  //     setShowAlert(true);
-  //     return;
-  //   }
-  //   console.log("startDatePicker type:", typeof startDatePicker);
-  //   console.log("endDatePicker type:", typeof endDatePicker);
-
-  //   // Check if the duration is less than one hour
-  //   const duration = moment.duration(endDatePicker.diff(startDatePicker)).as('hours');
-  //   if (duration < 1) {
-  //     setMinTimeSlotAlert(true);
-  //     return;
-  //   }
-
-  //   // Check if the start date is before 9 AM or the end date is after 6 PM
-  //   const nineAM = moment(startDatePicker).set({ hour: 9, minute: 0, second: 0 });
-  //   const sixPM = moment(endDatePicker).set({ hour: 18, minute: 0, second: 0 });
-
-  //   if (startDatePicker.isBefore(nineAM) || endDatePicker.isAfter(sixPM)) {
-  //     setShowTimeSlotAlert(true);
-  //     return;
-  //   }
-
-  //   // Check if startDatePicker is a Moment object
-  //   if (!moment.isMoment(startDatePicker) || !moment.isMoment(endDatePicker)) {
-  //     console.error("startDatePicker or endDatePicker is not a Moment object.");
-  //     return;
-  //   }
-
-  //   // Check for overlap with existing events
-  //   const overlap = events.some(event => {
-  //     const eventStart = moment(event.start);
-  //     const eventEnd = moment(event.end);
-
-  //     // Check if the new event overlaps with existing events
-  //     return (
-  //       startDatePicker.isBetween(eventStart, eventEnd, null, '[)') ||
-  //       endDatePicker.isBetween(eventStart, eventEnd, null, '(]') ||
-  //       (startDatePicker.isSameOrBefore(eventStart) && endDatePicker.isSameOrAfter(eventEnd)) ||
-  //       (startDatePicker.isSameOrAfter(eventStart) && endDatePicker.isSameOrBefore(eventEnd))
-  //     );
-  //   });
-
-  //   if (overlap) {
-  //     setShowOverlapAlert(true); // Show overlap alert
-  //     return;
-  //   }
-
-  //   // Format the start and end times
-  //   const startTime = startDatePicker.format('hh:mm A');
-  //   const endTime = endDatePicker.format('hh:mm A');
-
-  //   // Construct the event title with time
-  //   const eventTitleWithTime = `${eventTitle} ${startTime} - ${endTime}`;
-
-  //   const newEvent = {
-  //     title: eventTitleWithTime,
-  //     start: startDatePicker.toISOString(),
-  //     end: endDatePicker.toISOString()
-  //   };
-
-  //   setEvents([...events, newEvent]);
-  //   closeModal();
-  // };
-
   const handleSaveEvent = () => {
-   // const currentDate = moment();
-
-  
     // Check if the duration is less than one hour
     const duration = moment.duration(endDatePicker.diff(startDatePicker)).as('hours');
     if (duration < 1) {
       setMinTimeSlotAlert(true);
       return;
     }
-  
-    // Check if the start date is before 9 AM or the end date is after 6 PM
-    const nineAM = moment(startDatePicker).set({ hour: 9, minute: 0, second: 0 });
-    const sixPM = moment(endDatePicker).set({ hour: 18, minute: 0, second: 0 });
-  
-    if (startDatePicker.isBefore(nineAM) || endDatePicker.isAfter(sixPM)) {
+
+    const eventStartHour = startDatePicker.hour();
+
+    if (eventStartHour < 9 || eventStartHour >= 18) {
       setShowTimeSlotAlert(true);
       return;
     }
-     // Check for overlap with existing events based on time only
-     const overlap = events.some(event => {
+
+    // Check for overlap with existing events on the same date based on time only
+    const overlap = events.some(event => {
+      const eventStartDate = moment(event.start).format('YYYY-MM-DD'); // Extract start date
+      const newEventStartDate = startDatePicker.format('YYYY-MM-DD'); // Extract start date of new event
+
+      // Check if the events occur on the same date
+      if (eventStartDate !== newEventStartDate) {
+        return false; // No overlap if events are on different dates
+      }
+
       const eventStartTime = moment(event.start).format('HH:mm'); // Extract start time
       const eventEndTime = moment(event.end).format('HH:mm'); // Extract end time
       const newEventStartTime = startDatePicker.format('HH:mm'); // Extract start time of new event
       const newEventEndTime = endDatePicker.format('HH:mm'); // Extract end time of new event
-  
+
       // Check if the start or end time of the new event falls within the range of an existing event
       return (
         (newEventStartTime >= eventStartTime && newEventStartTime < eventEndTime) || // Check start time overlap
         (newEventEndTime > eventStartTime && newEventEndTime <= eventEndTime) // Check end time overlap
       );
     });
-  
+
     if (overlap) {
       setShowOverlapAlert(true); // Show overlap alert
       return;
     }
-  
+
     // Format the start and end times
     const startTime = startDatePicker.format('hh:mm A');
     const endTime = endDatePicker.format('hh:mm A');
-  
+
     // Construct the event title with time
     const eventTitleWithTime = `${eventTitle} ${startTime} - ${endTime}`;
-  
-    // Check if the new event already exists in the events array
-    const eventExists = events.some(event => event.title === eventTitleWithTime);
-  
-    if (!eventExists) {
-      const newEvent = {
-        title: eventTitleWithTime,
-        start: startDatePicker.toISOString(),
-        end: endDatePicker.toISOString()
-      };
-  
-      setEvents([...events, newEvent]);
-    }
-  
+
+    // Create the new event
+    const newEvent = {
+      title: eventTitleWithTime,
+      start: startDatePicker.toISOString(),
+      end: endDatePicker.toISOString()
+    };
+
+    // Add the new event to the events array
+    setEvents([...events, newEvent]);
+
+    // Close the modal
     closeModal();
   };
-  
 
   const handleTitleChange = (e) => {
     setEventTitle(e.target.value);
